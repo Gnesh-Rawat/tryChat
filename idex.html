@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat App</title>
+    <style>
+        #greeting {
+            font-size: 20px;
+            margin: 20px auto;
+            width: 50%;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            margin: 20px auto;
+            width: 50%;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 20px;
+            display: none;
+            background-color: #f0f0f0;
+        }
+
+        input {
+            width: 96.5%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #mymessage {
+            margin: 5px auto;
+            width: 50%;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 0 20px;
+            text-align: right;
+            background-color: #f9f9f9;
+        }
+
+        #reply {
+            margin: 5px auto;
+            width: 50%;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            background-color: #f9f9f9;
+        }
+        /* make this responsive  */
+        @media screen and (max-width: 600px) {
+            #greeting {
+                width: 100%;
+            }
+
+            .container {
+                width: 100%;
+            }
+
+            #mymessage {
+                width: 100%;
+            }
+
+            #reply {
+                width: 100%;
+            }
+            
+        }
+    </style>
+</head>
+
+<body>
+    <div id="greeting"></div>
+    <div class="container" id="container">
+        <input type="text" name="prompt" id="prompt" placeholder="Enter your prompt here" autocomplete="off" required>
+        <button type="button" id="sendBtn">Send</button>
+    </div>
+    <div id="mymessage"></div>
+    <div id="reply"></div>
+
+    <script>
+        window.onload = function () {
+            let greet = document.getElementById("greeting");
+            let container = document.getElementById("container");
+            let greetStr = "Hello, My name is Ganesh. You can chat with me here";
+            let index = 0;
+
+            let interval = setInterval(() => {
+                if (index < greetStr.length) {
+                    greet.textContent += greetStr[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    container.style.display = "block";
+                }
+            }, 50);
+        };
+
+        document.getElementById("sendBtn").addEventListener("click", async () => {
+            let prompt = document.getElementById("prompt").value;
+            if (prompt.trim() === "") return; // Prevent empty prompts
+
+            // make empty to the input field
+            document.getElementById("prompt").value = "";
+
+            let mymessage = document.getElementById("mymessage");
+            mymessage.innerHTML = `${prompt}`;
+
+            let aiReply = await getAIReply(prompt);
+
+            let reply = document.getElementById("reply");
+            reply.textContent = ""; // Clear previous reply
+            let index = 0;
+
+            let interval = setInterval(() => {
+                if (index < aiReply.length) {
+                    reply.textContent += aiReply[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50);
+        });
+
+        async function getAIReply(userPrompt) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    let aiReply;
+                    switch (userPrompt.toLowerCase()) {
+                        case "baby":
+                            aiReply = "Hi darling, what is your plan for today";
+                            break;
+                        case "bye":
+                            aiReply = "bye! bye! Have a great day";
+                            break;
+                        case "can you help me":
+                            aiReply = "Of course! What do you need help with";
+                            break;
+                        case "do you have a family":
+                            aiReply = "Yes, I  have";
+                            break;
+                        case "date":
+                            let date1 = new Date();
+                            let day = date1.getDate();
+                            let month = date1.getMonth() + 1;
+                            let year = date1.getFullYear();
+                            aiReply = `Today's date is ${day}/${month}/${year}`;
+                            break;
+                        case "do you have any friends":
+                            aiReply = "I consider everyone as my friend";
+                            break;
+                        case "do you like music":
+                            aiReply = "Yes, I listen music. I like music very much";
+                            break;
+                        case "good afternoon":
+                            aiReply = "Good afternoon! How can I assist you today";
+                            break;
+                        case "good evening":
+                            aiReply = "Good evening! How can I assist you today";
+                            break;
+                        case "good morning":
+                            aiReply = "Good morning! How can I assist you today";
+                            break;
+                        case "good night":
+                            aiReply = "Good night! Sleep well.";
+                            break;
+                        case "hello":
+                        case "hi": 
+                        case "hey":
+                            aiReply = "Hello, How are you today";
+                            break;
+                        case "help":
+                            aiReply = "Sure, I'm here to help! What do you need assistance with";
+                            break;
+                        case "how are you":
+                            aiReply = "I'm very well, thank you.";
+                            break;
+                        case "how do you work":
+                            aiReply = "It is virtual assistant. It process your input and provide responses based on predefined logic.";
+                            break;
+                        case "how old are you":
+                            aiReply = "I am 19 years old.";
+                            break;
+                        case "i am fine":
+                        case "i am good":
+                        case "fine":
+                            aiReply = "oh, It's very nice";
+                            break;
+                        case "lets go to park":
+                            aiReply = "Ok, I'm ready to go with you park side now";
+                            break;
+                        case "tell me a joke":
+                            aiReply = "Its's sorry. Currently I don't have any joke.";
+                            break;
+                        case "thank you": 
+                        case "thanks":
+                            aiReply = "You're welcome";
+                            break;
+                        case "time":
+                            let date = new Date();
+                            let hours = date.getHours();
+                            let minutes = date.getMinutes();
+                            let seconds = date.getSeconds();
+                            aiReply = `It's ${hours}:${minutes}:${seconds} now`;
+                            break;
+                        case "what's new":
+                            aiReply = "Not much, just here to chat with you. What's new with you";
+                            break;
+                        case "what's your name":
+                            aiReply = "I'm Ganesh, your virtual assistant.";
+                            break;
+                        case "what is your skills": 
+                        case "skills":
+                            aiReply = "I am student of IT department of Secondary School Tulsipur Center.I know few skills in programming Languages (html, css, js, python, java, C language, PHP, C++, React, Bootstrap framework, etc.)";
+                            break;
+                        case "where are you":
+                            aiReply = "I'm in your computer, waiting for you";
+                            break;
+                        case "where are you from":
+                            aiReply = "I'm from the digital world, created to chat with you";
+                            break;
+                        case "where are you from":
+                            aiReply = "I'm from the digital world, created to chat with you";
+                            break;
+                        default:
+                            aiReply = "Sorry, I don't have an answer for your that";
+                            break;
+                    }
+                    resolve(aiReply);
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+
+</html>
